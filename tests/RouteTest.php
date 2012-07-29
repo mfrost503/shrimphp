@@ -1,5 +1,4 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/lib/Route.php';
 
 class RouteTest extends PHPUnit_Framework_TestCase
 {

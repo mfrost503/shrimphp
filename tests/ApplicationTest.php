@@ -1,14 +1,4 @@
 <?php
-include dirname(dirname(__FILE__)) . '/lib/Application.php';
-include dirname(dirname(__FILE__)) . '/lib/Route.php';
-include dirname(dirname(__FILE__)) . '/lib/Request.php';
-include dirname(dirname(__FILE__)) . '/lib/Router.php';
-include dirname(dirname(__FILE__)) . '/lib/Controller.php';
-//include dirname(dirname(__FILE__)) . '/modules/main/controllers/index.php';
-
-define('APPROOT',dirname(dirname(__FILE__))."/");
-define('LIBPATH',str_replace('//','/',APPROOT.'/lib/'));
-define('MODULEPATH',APPROOT.'modules/');
 
 class ApplicationTest extends PHPUnit_Framework_TestCase
 {
@@ -24,7 +14,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * The application has a router and the proper request injected
+     * Given the application has a router and the proper request injected
      * it checks to ensure the files/methods exist so they can be included
      * in this case everything will exist
      */
@@ -47,6 +37,28 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $action = self::getProperty('action');
         $this->assertEquals($action->getValue($application),'showAction');
         $this->assertTrue(method_exists($controller->getValue($application),$action->getValue($application)));
+    }
+
+    /**
+     * @test
+     * Given that we have an instance of the application
+     * and we have a valid router instance
+     * the view path should be initially set using router components
+     */
+
+    public function ViewPathIsSetOnRun()
+    {
+        $request = new Request($_SERVER['REQUEST_URI']);
+        $router = new Router($request);
+        $router->addRoute(new Route('main/index/:action',array('controller'=>'index','module'=>'main')));
+        $application = new Application($router);
+        ob_start();
+        $application->run();
+        $output = ob_get_contents();
+        ob_clean();
+        $view = self::getProperty('view')->getValue($application);
+        $this->assertTrue($view instanceof View);
+        $this->assertFalse(empty($output));
     }
 
     protected static function getMethod($method)

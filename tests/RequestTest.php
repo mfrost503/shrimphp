@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/lib/Request.php';
+
 class RequestTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()

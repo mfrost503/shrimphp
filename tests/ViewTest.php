@@ -1,21 +1,15 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . '/lib/Request.php';
-require_once dirname(dirname(__FILE__)) . '/lib/View.php';
-
 class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function setUp()
     {
-        $this->request = $this->getMock('Request');
-        $this->request->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue('main/index/show'));
+        $this->components = array('controller'=>'index','module'=>'main','action'=>'show');
     }
 
     public function tearDown()
     {
-        unset($this->request);
+        unset($this->components);
     }
 
     /**
@@ -26,12 +20,29 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function RetrieveViewTemplateEnsureContentIsReturned()
     {
-        $view = new View();
-        ob_start();
-        $view->setView('main/views/index/show.tpl');
-        $view->render();
-        $output = ob_get_contents();
-        ob_end_clean();
+        $view = new View($this->components);
+        $view->setView('show');
+        $output = $view->render();
         $this->assertTrue(!empty($output));
+        unset($view);
+        unset($output);
+    }
+
+    /**
+     * @test
+     * Given that we have an array of routing elements
+     * and we've not manually set the template or path
+     * we should get data from the render method.
+     */
+
+    public function EnsureViewTemplateIsReturnedWithDefaultSetup()
+    {
+        $view = new View($this->components);
+        $this->assertEquals('show.tpl',$view->getView());
+        $this->assertTrue(is_dir($view->getPath()));
+        $this->assertTrue(is_file($view->getPath().$view->getView()));
+        $out = $view->render();
+        $this->assertTrue(is_string($out));
+        $this->assertTrue(strlen($out) > 0);
     }
 }

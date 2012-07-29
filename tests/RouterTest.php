@@ -1,7 +1,4 @@
 <?php
-require_once dirname(dirname(__FILE__)) . '/lib/Request.php';
-require_once dirname(dirname(__FILE__)) . '/lib/Router.php';
-require_once dirname(dirname(__FILE__)) . '/lib/Route.php';
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {

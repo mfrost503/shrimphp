@@ -3,6 +3,20 @@
 class Application {
 
     /**
+     * @var View
+     * View object for the controller
+     */
+
+    private $view = null;
+
+    /**
+     * @var Layout
+     * Layout object for the controller
+     */
+
+    private $layout = null;
+
+    /**
      * @var Router
      * Instance of Router that sets the controller,module, and action
      * paths and calls
@@ -52,8 +66,9 @@ class Application {
     private function setController()
     {
         if(include_once(MODULEPATH . $this->components['module'].'/controllers/'.$this->components['controller'] .'.php')){
+            $this->setView();
             $class = ucwords($this->components['controller']) . "Controller";
-            $this->controller = new $class;
+            $this->controller = new $class($this->view);
             return true;
         }
 
@@ -67,6 +82,11 @@ class Application {
     private function setAction()
     {
         $this->action = $this->components['action'].'Action';
+    }
+
+    private function setView()
+    {
+        $this->view = new View($this->router->getRoutingElements());
     }
 
     /**
