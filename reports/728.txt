@@ -1,0 +1,18 @@
+
+
+Code Coverage Report 
+  1969-12-31 18:00:00
+
+ Summary: 
+  Classes: 40.00% (2/5)
+  Methods: 72.22% (13/18)
+  Lines:   87.72% (50/57)
+
+Application
+  Methods: 100.00% ( 4/ 4)   Lines:  83.33% ( 15/ 18)
+Request
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  5/  5)
+Route
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% (  8/  8)
+Router
+  Methods: 100.00% ( 6/ 6)   Lines:  88.00% ( 22/ 25)

@@ -11,9 +11,8 @@ class Router
         $this->request = $request;
     }
 
-    /*
-     * getRequest()
-     * @returns Request
+    /**
+     * @return Request
      * @description returns the request that was set in the constructor
      */
 
@@ -22,16 +21,23 @@ class Router
         return $this->request;
     }
 
+    /**
+     * @param Route $route
+     * @return void
+     * @description populates an array of routes with the provided route object
+     **/
+
     public function addRoute(Route $route)
     {
         $this->routes[] = $route;
     }
-    /*
-     * getRoutingElements()
-     * @returns array
+
+    /**
+     * @return array
      * @description returns an array containing the controller name,module name, action name
      * base on a route or variable names
      */
+
     public function getRoutingElements()
     {
         $this->matchRoutes();
@@ -41,6 +47,11 @@ class Router
 
         return $this->components;
     }
+
+    /**
+     * @return bool
+     * @description loops through the provided routes and looks for an exact match, or a match with :key
+     */
 
     private function matchRoutes()
     {
@@ -60,6 +71,15 @@ class Router
         }
         return false;
     }
+
+    /**
+     * @param $path
+     * @param $request
+     * @return void
+     * @description used when a route/request don't have an exact match
+     * this will look for any keys in the route, strip out all the matching
+     * components from the request and set the key to the remaining value
+     */
 
     private function replaceRegex($path,$request)
     {

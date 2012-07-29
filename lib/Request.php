@@ -5,7 +5,10 @@
  * Author: Matt Frost
  */
 class Request {
-
+    /**
+     * @var string
+     * The string that is passed in as URI request
+     */
     private $request;
 
     public function __construct($request="")
