@@ -20,10 +20,4 @@ class Controller {
     {
         $this->view = $view;
     }
-
-    public function __destruct()
-    {
-        echo $this->view->render();
-    }
-
 }
