@@ -21,7 +21,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
     public function RetrieveViewTemplateEnsureContentIsReturned()
     {
         $view = new View($this->components);
-        $view->setView('show');
+        $view->set('view','show.tpl');
         $output = $view->render();
         $this->assertTrue(!empty($output));
         unset($view);
@@ -38,11 +38,74 @@ class ViewTest extends PHPUnit_Framework_TestCase {
     public function EnsureViewTemplateIsReturnedWithDefaultSetup()
     {
         $view = new View($this->components);
-        $this->assertEquals('show.tpl',$view->getView());
-        $this->assertTrue(is_dir($view->getPath()));
-        $this->assertTrue(is_file($view->getPath().$view->getView()));
+        $this->assertEquals('show.tpl',$view->get('view'));
+        $this->assertTrue(is_dir($view->get('path')));
+        $this->assertTrue(is_file($view->get('path').$view->get('view')));
         $out = $view->render();
         $this->assertTrue(is_string($out));
         $this->assertTrue(strlen($out) > 0);
+    }
+
+    /**
+     * @test
+     * Given that the layout file is not provided or does not exist
+     * we will not expect to see the layout code
+     */
+
+    public function VerifyThatNoLayoutIsReturnedIfFileDoesNotExist()
+    {
+        $view = new View($this->components);
+        $view->set('layout','newLayout.tpl');
+        ob_start();
+        include $view->get('path').$view->get('view');
+        $expectedView = ob_get_contents();
+        ob_end_clean();
+        $this->assertEquals($view->render(),$expectedView);
+    }
+
+    /**
+     * @test
+     * Given that the layout has been set, we can validate
+     * the filename is set and that the file exists
+     */
+
+    public function EnsureDefaultLayoutIsSetOnView()
+    {
+        $view = new View($this->components);
+        $layout =  $view->get('layout');
+        $this->assertEquals($layout,'layout.tpl');
+        $this->assertTrue(is_file(APPROOT.'/layouts/'.$layout));
+    }
+
+    /**
+     * @test
+     * Given that we have no layout set, and there is a view set
+     * we should expect to see the layout template returned
+     */
+
+    public function EnsureLayoutIsReturnedWithNoValidView()
+    {
+        $view = new View($this->components);
+        $view->set('view','');
+        ob_start();
+        include APPROOT .'/layouts/' . $view->get('layout');
+        $expected = ob_get_contents();
+        ob_end_clean();
+        $this->assertEquals($expected,$view->render());
+    }
+
+    /**
+     * @test
+     * Given that there is no valid layout or valid view
+     * we expected to see the canned error message telling us there
+     * is no view.
+     */
+    public function EnsureErrorMessageIsReturnedWithNoViewOrLayout()
+    {
+        $view = new View($this->components);
+        $view->set('layout','');
+        $view->set('view','');
+        $expected = 'No View or Layout set for this action';
+        $this->assertEquals($view->render(),$expected);
     }
 }

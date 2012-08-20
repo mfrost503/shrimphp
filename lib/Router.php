@@ -4,7 +4,7 @@ class Router
 {
     private $request;
     private $routes = array();
-    private $components = array('controller'=>'','action'=>'','module'=>'');
+    private $components = array('controller'=>'index','action'=>'show','module'=>'main');
 
     public function __construct(Request $request)
     {
@@ -12,13 +12,12 @@ class Router
     }
 
     /**
-     * @return Request
-     * @description returns the request that was set in the constructor
+     * @description returns the value of the provided attribute
      */
 
-    public function getRequest()
+    public function get($attr)
     {
-        return $this->request;
+        return $this->$attr;
     }
 
     /**
@@ -35,15 +34,13 @@ class Router
     /**
      * @return array
      * @description returns an array containing the controller name,module name, action name
-     * base on a route or variable names
+     * base on a route or variable names - matchRoutes will set the components if they match
+     * otherwise the default will be returned
      */
 
     public function getRoutingElements()
     {
         $this->matchRoutes();
-        if(is_array($this->components)){
-            return $this->components;
-        }
 
         return $this->components;
     }
@@ -57,7 +54,6 @@ class Router
     {
         foreach($this->routes as $route){
             if($route->getPath() == $this->request->getRequest()){
-
                 $this->components = $route->getComponents();
                 return true;
             }

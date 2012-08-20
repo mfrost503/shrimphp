@@ -3,11 +3,14 @@
 define('APPROOT',dirname(__FILE__));
 define('LIBPATH',str_replace('//','/',APPROOT.'/lib/'));
 define('MODULEPATH',APPROOT.'/modules/');
+define('LAYOUTPATH', APPROOT.'/layouts/');
 
-function __autoload($class)
+function loader($class)
 {
     require_once LIBPATH .'/'.$class.'.php';
 }
+
+spl_autoload_register("loader");
 
 /**
  * Create the Request Variable

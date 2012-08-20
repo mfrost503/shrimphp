@@ -9,12 +9,6 @@ class Application {
 
     private $view = null;
 
-    /**
-     * @var Layout
-     * Layout object for the controller
-     */
-
-    private $layout = null;
 
     /**
      * @var Router
@@ -65,13 +59,15 @@ class Application {
 
     private function setController()
     {
-        if(include_once(MODULEPATH . $this->components['module'].'/controllers/'.$this->components['controller'] .'.php')){
+        $file = MODULEPATH . $this->components['module'].'/controllers/'.$this->components['controller'] .'.php';
+        if(is_file($file)){
+            include_once $file;
             $this->setView();
             $class = ucwords($this->components['controller']) . "Controller";
             $this->controller = new $class($this->view);
             return true;
         }
-
+        return false;
     }
 
     /**
@@ -101,7 +97,6 @@ class Application {
         $this->setController();
         $this->setAction();
         if((method_exists($this->controller,$this->action))){
-
             call_user_func(array($this->controller,$this->action));
             return true;
         }

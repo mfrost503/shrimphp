@@ -18,10 +18,23 @@ class View {
 
     /**
      * @var string
+     * the title of the given view
+     */
+
+    private $title = "My Test Page";
+    /**
+     * @var string
      * the filename of the view tpl itself
      */
 
     private $view;
+
+    /**
+     * @var string
+     * the layout to use
+     */
+
+    private $layout = 'layout.tpl';
 
     /**
      * @param array $components
@@ -30,66 +43,54 @@ class View {
 
     public function __construct(Array $components)
     {
-        $this->setPath($this->generatePath($components));
-        $this->setView($components['action']);
+        $this->set('path',$this->generatePath($components));
+        $this->set('view',$components['action'].'.tpl');
     }
 
     /**
-     * @param $path
+     * @param $attr - attribute name
+     * @param $val - value of attribute
      * Set the path to the view folder you'd like to use
      */
 
-    public function setPath($path)
+    public function set($attr,$val)
     {
-        $this->path = $path;
-    }
-
-    /**
-     * @param $view
-     * Set the name of the view file you'd like to use
-     */
-
-    public function setView($view){
-        $this->view = $view .'.tpl';
+        $this->$attr = $val;
     }
 
     /**
      * @return string
-     * returns the path
+     * @param string
+     * return the value of the provided attribute
      */
 
-    public function getPath()
+    public function get($attr)
     {
-        return $this->path;
+        return $this->$attr;
     }
 
     /**
      * @return string
-     * returns the view
-     */
-
-    public function getView()
-    {
-        return $this->view;
-    }
-
-    /**
-     * @return string
-     * Checks to see if the file exists, starts the buffer and
-     * throws the output into the content property
+     * Attempts to load the layout and view files and replaces any keys
+     * that may exist in the templates.
      */
 
     public function render()
     {
         $file = $this->path . $this->view;
-        if(is_file($file)){
-            ob_start();
-            include $file;
-            $this->content = ob_get_contents();
-            ob_end_clean();
+        $layout = $this->retrieveLayout();
+        $view = $this->retrieveView($file);
+        if($layout && !$view){
+            return $layout;
+        }
+        if(!$layout && $view){
+            return $view;
+        }
+        if(!$layout && !$view){
+            return 'No View or Layout set for this action';
         }
 
-        return $this->content;
+        return str_replace(array('{content}','{title}'),array($view,$this->title),$layout);
     }
 
     /**
@@ -103,4 +104,32 @@ class View {
         return MODULEPATH . $components['module'] .'/views/' . $components['controller'] .'/';
     }
 
+    /**
+     * @return string
+     * returns the HTML that is included in the specified layout file.
+     */
+
+    private function retrieveLayout()
+    {
+        if(is_file(APPROOT. '/layouts/'.$this->layout)){
+            ob_start();
+            include(APPROOT.'/layouts/'.$this->layout);
+            $layout = ob_get_contents();
+            ob_end_clean();
+            return $layout;
+        }
+        return false;
+    }
+
+    private function retrieveView($file)
+    {
+        if(is_file($file)){
+            ob_start();
+            include $file;
+            $content = ob_get_contents();
+            ob_end_clean();
+            return $content;
+        }
+        return false;
+    }
 }
