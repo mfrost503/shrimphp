@@ -30,9 +30,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config('config.php');
         $db = $config->get('db');
-        $this->assertEquals('localhost',$db['host']);
+        $this->assertEquals('mysql:host=localhost;dbname=test',$db['dsn']);
         $this->assertEquals('root',$db['user']);
-        $this->assertEquals('mysql',$db['type']);
     }
 
     /**
@@ -45,7 +44,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $config = new Config('config.php');
         $values = $config->get();
-        $this->assertEquals($values['db']['host'],'localhost');
+        $this->assertEquals($values['db']['dsn'],'mysql:host=localhost;dbname=test');
         $this->assertEquals($values['paths']['application'],APPROOT);
     }
 }

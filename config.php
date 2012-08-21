@@ -7,9 +7,8 @@ $config = array(
         'modules' => dirname(__FILE__) . 'modules',
     ),
     'db' => array(
-        'type' => 'mysql',
-        'host' => 'localhost',
+        'dsn' => 'mysql:host=localhost;dbname=test',
         'user' => 'root',
-        'pass' => '10255Wild',
+        'password' => '10255Wild',
     ),
 );
