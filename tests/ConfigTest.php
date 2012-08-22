@@ -31,7 +31,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $config = new Config('config.php');
         $db = $config->get('db');
         $this->assertEquals('mysql:host=localhost;dbname=test',$db['dsn']);
-        $this->assertEquals('root',$db['user']);
+        $this->assertEquals('user',$db['user']);
     }
 
     /**
