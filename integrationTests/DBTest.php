@@ -1,20 +1,12 @@
 <?php
 
-class DBTest extends PHPUnit_Framework_TestCase
+class DBTest extends PHPUnit_Extensions_SeleniumTestCase
 {
     public function setUp(){
-
+        $this->setBrowser('googlechrome');
+        $this->setBrowserUrl('http://localhost:8080');
     }
     public function tearDown(){}
-
-
-    public static function getProp($property)
-    {
-        $class = new ReflectionClass('DB');
-        $prop = $class->getProperty($property);
-        $prop->setAccessible(true);
-        return $prop;
-    }
 
     /**
      * @test
@@ -24,9 +16,6 @@ class DBTest extends PHPUnit_Framework_TestCase
 
     public function EnsureThatPDOIsSetUponInstantiation()
     {
-        $config = new Config('config.php');
-        $database = new DB($config);
-        $pdo = self::getProp('db')->getValue($database);
-        $this->assertTrue($pdo instanceof PDO);
+
     }
 }

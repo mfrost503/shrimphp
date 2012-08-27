@@ -4,14 +4,14 @@ class RequestTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $_SERVER['REQUEST_URI'] = "main/index/hello";
-        $_SERVER['QUERY_STRING'] = "module=main&controller=index&action=hello";
+        $this->requestUri = "main/index/hello";
+        $this->queryString = "module=main&controller=index&action=hello";
     }
 
     public function tearDown()
     {
-        unset($_SERVER['REQUEST_URI']);
-        unset($_SERVER['QUERY_STRING']);
+        unset($this->requestUri);
+        unset($this->queryString);
     }
     /**
      * @test
@@ -21,11 +21,11 @@ class RequestTest extends PHPUnit_Framework_TestCase
     public function testRequestIsSetAndRetrievedProperly()
     {
         $request = new Request();
-        $request->setRequest($_SERVER['REQUEST_URI']);
-        $this->assertEquals($request->getRequest(),$_SERVER['REQUEST_URI']);
-        $this->assertFalse(empty($_SERVER['REQUEST_URI']));
-        $request->setRequest($_SERVER['QUERY_STRING']);
-        $this->assertEquals($request->getRequest(),$_SERVER['QUERY_STRING']);
-        $this->assertFalse(empty($_SERVER['QUERY_STRING']));
+        $request->setRequest($this->requestUri);
+        $this->assertEquals($request->getRequest(),$this->requestUri);
+        $this->assertFalse(empty($this->requestUri));
+        $request->setRequest($this->queryString);
+        $this->assertEquals($request->getRequest(),$this->queryString);
+        $this->assertFalse(empty($this->queryString));
     }
 }

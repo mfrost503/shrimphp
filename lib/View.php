@@ -37,6 +37,12 @@ class View {
     private $layout = 'layout.tpl';
 
     /**
+     * @var array
+     * assignable variables
+     */
+
+    private $templateVariables = array();
+    /**
      * @param array $components
      * Generate the default view path and set default view based on routing components
      */
@@ -69,6 +75,15 @@ class View {
         return $this->$attr;
     }
 
+    /**
+     * @param $key string
+     * @param $value string
+     * sets a view variable that can be replaced.
+     */
+    public function assign($key,$value)
+    {
+        $this->templateVariables['{'.$key.'}'] = $value;
+    }
     /**
      * @return string
      * Attempts to load the layout and view files and replaces any keys
@@ -128,8 +143,18 @@ class View {
             include $file;
             $content = ob_get_contents();
             ob_end_clean();
-            return $content;
+            return str_replace($this->getVariableKeys(),$this->getVariableValues(),$content);
         }
         return false;
+    }
+
+    private function getVariableKeys()
+    {
+        return array_keys($this->templateVariables);
+    }
+
+    private function getVariableValues()
+    {
+        return array_values($this->templateVariables);
     }
 }

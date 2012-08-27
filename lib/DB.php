@@ -8,6 +8,12 @@ class DB
     {
         $this->config = $config;
         $dbConfig = $config->get('db');
-        $this->db = new PDO($dbConfig['dsn'],$dbConfig['user'],$dbConfig['password']);
+        try{
+            if(!$this->db = new PDO($dbConfig['dsn'],$dbConfig['user'],$dbConfig['password'])){
+               throw new Exception("Error loading database");
+            }
+        }catch(Exception $e){
+            print $e->getMessage();
+        }
     }
 }

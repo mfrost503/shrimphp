@@ -91,7 +91,9 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $router = new Router($request);
         $router->addRoute(new Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
         $application = new Application($router);
+        ob_start();
         $this->assertTrue($application->run());
+        ob_end_clean();
     }
 
     /**

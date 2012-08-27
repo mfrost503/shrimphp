@@ -108,4 +108,22 @@ class ViewTest extends PHPUnit_Framework_TestCase {
         $expected = 'No View or Layout set for this action';
         $this->assertEquals($view->render(),$expected);
     }
+
+    /**
+     * @test
+     * Given that we've made a template variable assignment with the assign method
+     * we should expect to be able to verify the keys are set correctly
+     */
+
+    public function EnsureTemplateVariableKeysAreSetCorrectly()
+    {
+        $view = new View($this->components);
+        $view->assign('user','Matt');
+        $view->assign('email','test@test.com');
+        $view->assign('phone','123-123-1234');
+        $templateVariables = $view->get('templateVariables');
+        $this->assertEquals($templateVariables['{user}'],'Matt');
+        $this->assertEquals($templateVariables['{email}'],'test@test.com');
+        $this->assertEquals($templateVariables['{phone}'],'123-123-1234');
+    }
 }

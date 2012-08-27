@@ -2,15 +2,19 @@
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
+    protected $requestUri;
+    protected $queryString;
+    
     public function setUp()
     {
-        $_SERVER['REQUEST_URI'] = 'main/index/show';
-        $_SERVER['QUERY_STRING'] = 'module=main&controller=index&action=show';
+        $this->requestUri = 'main/index/show';
+        $this->queryString = 'module=main&controller=index&action=show';
     }
 
     public function tearDown()
     {
-        unset($_SERVER);
+        unset($this->requestUri);
+        unset($this->queryString);
     }
 
     public function provideRoutes()
@@ -35,10 +39,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $this->assertTrue($router->get('request') instanceof Request);
-        $this->assertEquals($request->getRequest(),$_SERVER['REQUEST_URI']);
+        $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['controller'],'index');
@@ -59,10 +63,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $this->assertTrue($router->get('request') instanceof Request);
-        $this->assertEquals($request->getRequest(),$_SERVER['REQUEST_URI']);
+        $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new Route('main/index/:action',array('module'=>'main','controller'=>'index')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['action'],'show');
@@ -83,10 +87,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $this->assertTrue($router->get('request') instanceof Request);
-        $this->assertEquals($request->getRequest(),$_SERVER['REQUEST_URI']);
+        $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new Route('main/:controller/show',array('module'=>'main','action'=>'show')));
         $this->assertTrue(is_array($components=$router->getRoutingElements()));
         $this->assertEquals($components['controller'],'index');
@@ -107,10 +111,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $this->assertTrue($router->get('request') instanceof Request);
-        $this->assertEquals($request->getRequest(),$_SERVER['REQUEST_URI']);
+        $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new Route(':module/index/show',array('controller'=>'index','action'=>'show')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['module'],'main');
@@ -129,7 +133,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $this->assertTrue($router->get('request') instanceof Request);
         $this->assertEquals($router->get('request')->getRequest(),$request->getRequest());
@@ -145,7 +149,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->getMock('Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
-            ->will($this->returnValue($_SERVER['REQUEST_URI']));
+            ->will($this->returnValue($this->requestUri));
         $router = new Router($request);
         $router->addRoute($route);
         $this->assertTrue(is_array($router->get('routes')));
