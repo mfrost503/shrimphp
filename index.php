@@ -5,12 +5,22 @@ define('LIBPATH',str_replace('//','/',APPROOT.'/lib/'));
 define('MODULEPATH',APPROOT.'/modules/');
 define('LAYOUTPATH', APPROOT.'/layouts/');
 
-function loader($class)
+function myLoader($class)
 {
-    require_once LIBPATH .'/'.$class.'.php';
+    $class = ltrim($class,'\\');
+    $fileName = '';
+    $namespace = '';
+    if($lastNsPos = strripos($class,'\\')) {
+        $namespace = substr($class,0,$lastNsPos);
+        $class = substr($class, $lastNsPos + 1);
+        $fileName = str_replace('\\',DIRECTORY_SEPARATOR,$namespace) . DIRECTORY_SEPARATOR;
+    }
+    $fileName .= str_replace('\\',DIRECTORY_SEPARATOR,$class) . '.php';
+
+    require LIBPATH . $fileName;
 }
 
-spl_autoload_register("loader");
+spl_autoload_register('myLoader');
 
 /**
  * Create the Request Variable
@@ -19,20 +29,20 @@ spl_autoload_register("loader");
  * Defaults to REQUEST_URI
  */
 
-$request = new Request($_SERVER['REQUEST_URI']);
+$request = new ShrimPHP\Core\Request($_SERVER['REQUEST_URI']);
 
 /**
  * Set the router and add the routes
  */
 
-$router = new Router($request);
-$home = new Route('index/:action',array('controller'=>'index','module'=>'main'));
+$router = new ShrimPHP\Core\Router($request);
+$home = new ShrimPHP\Core\Route('index/:action',array('controller'=>'index','module'=>'main'));
 $router->addRoute($home);
 
 /**
  * Run it!
  */
 
-$application = new Application($router);
+$application = new ShrimPHP\Core\Application($router);
 $application->run();
 

@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends Controller
+class IndexController extends \ShrimPHP\Core\Controller
 {
     public function showAction(){
         $this->view->assign('user','Matt');

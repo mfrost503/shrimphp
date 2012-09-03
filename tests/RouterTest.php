@@ -4,7 +4,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 {
     protected $requestUri;
     protected $queryString;
-    
+
     public function setUp()
     {
         $this->requestUri = 'main/index/show';
