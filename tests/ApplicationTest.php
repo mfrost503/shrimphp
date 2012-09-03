@@ -23,10 +23,10 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     public function ApplicationControllerExistsAndActionNameIsSet()
     {
 
-        $request = new Request($this->requestString);
-        $router = new Router($request);
-        $router->addRoute(new Route('main/index/:action',array('controller'=>'index','module'=>'main')));
-        $application = new Application($router);
+        $request = new ShrimPHP\Core\Request($this->requestString);
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('controller'=>'index','module'=>'main')));
+        $application = new ShrimPHP\Core\Application($router);
         $this->assertEquals($router->get('request')->getRequest(),$this->requestString);
         $this->assertTrue(is_array($router->getRoutingElements()));
         $setController = self::getMethod('setController');
@@ -49,22 +49,22 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function ViewPathIsSetOnRun()
     {
-        $request = new Request($this->requestString);
-        $router = new Router($request);
-        $router->addRoute(new Route('main/index/:action',array('controller'=>'index','module'=>'main')));
-        $application = new Application($router);
+        $request = new ShrimPHP\Core\Request($this->requestString);
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('controller'=>'index','module'=>'main')));
+        $application = new ShrimPHP\Core\Application($router);
         ob_start();
         $application->run();
         $output = ob_get_contents();
         ob_clean();
         $view = self::getProperty('view')->getValue($application);
-        $this->assertTrue($view instanceof View);
+        $this->assertTrue($view instanceof ShrimPHP\Core\View);
         $this->assertFalse(empty($output));
     }
 
     protected static function getMethod($method)
     {
-        $class = new ReflectionClass('Application');
+        $class = new ReflectionClass('ShrimPHP\Core\Application');
         $method = $class->getMethod($method);
         $method->setAccessible(true);
         return $method;
@@ -72,7 +72,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     protected static function getProperty($property)
     {
-        $class = new ReflectionClass('Application');
+        $class = new ReflectionClass('ShrimPHP\Core\Application');
         $property = $class->getProperty($property);
         $property->setAccessible(true);
         return $property;
@@ -87,10 +87,10 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function VerifyThatRunReturnsTrueOnValidRequest()
     {
-        $request = new Request($this->requestString);
-        $router = new Router($request);
-        $router->addRoute(new Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
-        $application = new Application($router);
+        $request = new ShrimPHP\Core\Request($this->requestString);
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
+        $application = new ShrimPHP\Core\Application($router);
         ob_start();
         $this->assertTrue($application->run());
         ob_end_clean();
@@ -104,13 +104,13 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function VerifyThatAValidRouterSetsTheRouterAndComponents()
     {
-        $request = new Request($this->requestString);
-        $router = new Router($request);
-        $router->addRoute(new Route("main/index/show",array('controller'=>'index','action'=>'show','module'=>'main')));
-        $application = new Application($router);
+        $request = new ShrimPHP\Core\Request($this->requestString);
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route("main/index/show",array('controller'=>'index','action'=>'show','module'=>'main')));
+        $application = new ShrimPHP\Core\Application($router);
         $routerProperty = self::getProperty('router')->getValue($application);
         $componentsProperty = self::getProperty('components')->getValue($application);
-        $this->assertTrue($routerProperty instanceof Router);
+        $this->assertTrue($routerProperty instanceof ShrimPHP\Core\Router);
         $this->assertTrue(is_array($componentsProperty));
         $this->assertTrue(count($componentsProperty)> 0);
     }
@@ -123,10 +123,10 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function EnsureThatRunReturnsFalseWhenInvalidControllerActionIsProvided()
     {
-        $request = new Request('main/json/index');
-        $router = new Router($request);
-        $router->addRoute(new Route('main/json/index',array('controller'=>'json','action'=>'index','module'=>'main')));
-        $application = new Application($router);
+        $request = new ShrimPHP\Core\Request('main/json/index');
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/json/index',array('controller'=>'json','action'=>'index','module'=>'main')));
+        $application = new ShrimPHP\Core\Application($router);
         $this->assertFalse($application->run());
     }
 }

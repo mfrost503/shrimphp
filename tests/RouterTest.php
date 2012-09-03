@@ -20,9 +20,9 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function provideRoutes()
     {
         return array(
-            array(new Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main'))),
-            array(new Route('main/index/help',array('controller'=>'index','action'=>'help','module'=>'main'))),
-            array(new Route('main/index/404',array('controller'=>'index','action'=>'404','module'=>'main'))),
+            array(new ShrimPHP\Core\Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main'))),
+            array(new ShrimPHP\Core\Route('main/index/help',array('controller'=>'index','action'=>'help','module'=>'main'))),
+            array(new ShrimPHP\Core\Route('main/index/404',array('controller'=>'index','action'=>'404','module'=>'main'))),
         );
     }
     /**
@@ -36,14 +36,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function RouterCanReceiveRequestAndReturnProperElementsNoRegex()
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
-        $this->assertTrue($router->get('request') instanceof Request);
+        $router = new ShrimPHP\Core\Router($request);
+        $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
-        $router->addRoute(new Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['controller'],'index');
         $this->assertEquals($components['action'],'show');
@@ -60,14 +60,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function RouterCanReceiveRequestAndReturnProperElementsRegexAction()
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
-        $this->assertTrue($router->get('request') instanceof Request);
+        $router = new ShrimPHP\Core\Router($request);
+        $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
-        $router->addRoute(new Route('main/index/:action',array('module'=>'main','controller'=>'index')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('module'=>'main','controller'=>'index')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['action'],'show');
         $this->assertEquals($components['controller'],'index');
@@ -84,14 +84,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function RouterCanReceiveRequestAndReturnProperElementsRegexController()
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
-        $this->assertTrue($router->get('request') instanceof Request);
+        $router = new ShrimPHP\Core\Router($request);
+        $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
-        $router->addRoute(new Route('main/:controller/show',array('module'=>'main','action'=>'show')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/:controller/show',array('module'=>'main','action'=>'show')));
         $this->assertTrue(is_array($components=$router->getRoutingElements()));
         $this->assertEquals($components['controller'],'index');
         $this->assertEquals($components['action'],'show');
@@ -108,14 +108,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function RouterCanReceiveRequestAndReturnProperElementsRegexModule()
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
-        $this->assertTrue($router->get('request') instanceof Request);
+        $router = new ShrimPHP\Core\Router($request);
+        $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
-        $router->addRoute(new Route(':module/index/show',array('controller'=>'index','action'=>'show')));
+        $router->addRoute(new ShrimPHP\Core\Route(':module/index/show',array('controller'=>'index','action'=>'show')));
         $this->assertTrue(is_array($components = $router->getRoutingElements()));
         $this->assertEquals($components['module'],'main');
         $this->assertEquals($components['controller'],'index');
@@ -130,12 +130,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function VerifyGetMethodReturnsTheRequest()
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
-        $this->assertTrue($router->get('request') instanceof Request);
+        $router = new ShrimPHP\Core\Router($request);
+        $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($router->get('request')->getRequest(),$request->getRequest());
     }
 
@@ -146,11 +146,11 @@ class RouterTest extends PHPUnit_Framework_TestCase
      */
 
     public function VerifyRoutesAreAddedToRoutesArray($route){
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->requestUri));
-        $router = new Router($request);
+        $router = new ShrimPHP\Core\Router($request);
         $router->addRoute($route);
         $this->assertTrue(is_array($router->get('routes')));
     }
@@ -173,15 +173,15 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function VerifyThatRoutingElementsAreReturned($requestVal,$expectedReturnArray)
     {
-        $request = $this->getMock('Request',array('getRequest'));
+        $request = $this->getMock('ShrimPHP\Core\Request',array('getRequest'));
         $request->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($requestVal));
-        $router = new Router($request);
-        $router->addRoute(new Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
-        $router->addRoute(new Route('main/index/index',array('module'=>'main','controller'=>'index','action'=>'index')));
-        $router->addRoute(new Route('main/index/hide',array('module'=>'main','controller'=>'index','action'=>'hide')));
-        $router->addRoute(new Route('main/index/404',array('module'=>'main','controller'=>'index','action'=>'404')));
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/index',array('module'=>'main','controller'=>'index','action'=>'index')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/hide',array('module'=>'main','controller'=>'index','action'=>'hide')));
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/404',array('module'=>'main','controller'=>'index','action'=>'404')));
         $components = $router->getRoutingElements();
         $this->assertEquals($components,$expectedReturnArray);
     }
@@ -194,9 +194,9 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function VerifyThatDefaultsAreUsedIfRequestDoesNotMatchRoute()
     {
-        $request = new Request('mains/json/help');
-        $router = new Router($request);
-        $router->addRoute(new Route('main/index/help',array('controller'=>'index','module'=>'main','action'=>'help')));
+        $request = new ShrimPHP\Core\Request('mains/json/help');
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/index/help',array('controller'=>'index','module'=>'main','action'=>'help')));
         $router->getRoutingElements();
         $components = $router->get('components');
         $this->assertEquals($components['controller'],'index');

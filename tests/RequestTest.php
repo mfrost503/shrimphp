@@ -20,7 +20,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testRequestIsSetAndRetrievedProperly()
     {
-        $request = new Request();
+        $request = new ShrimPHP\Core\Request();
         $request->setRequest($this->requestUri);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $this->assertFalse(empty($this->requestUri));
