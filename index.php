@@ -40,9 +40,16 @@ $home = new ShrimPHP\Core\Route('index/:action',array('controller'=>'index','mod
 $router->addRoute($home);
 
 /**
+ * Instantiate a view that can be passed to the Application
+ * this allows a 3rd party templating system like Smarty or Twig
+ */
+
+$view = new ShrimPHP\Core\ShrimpView($router->getRoutingElements());
+
+/**
  * Run it!
  */
 
-$application = new ShrimPHP\Core\Application($router);
+$application = new ShrimPHP\Core\Application($router,$view);
 $application->run();
 

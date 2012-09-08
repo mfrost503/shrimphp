@@ -41,14 +41,23 @@ class Application {
     private $components = array();
     /**
      * @param Router $router
+     * @param View $view
      * @description sets router object
      */
 
-    public function __construct(Router $router)
+    public function __construct(Router $router,View $view=null)
     {
         if($router instanceof Router){
             $this->router = $router;
             $this->components = $this->router->getRoutingElements();
+        }
+
+        if($view instanceof View){
+            $this->view = $view;
+        }
+
+        if($view === null){
+            $this->view = new ShrimpView($this->components);
         }
     }
 
