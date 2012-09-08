@@ -83,7 +83,7 @@ class Application {
 
     private function setView()
     {
-        $this->view = new View($this->router->getRoutingElements());
+        $this->view = new ShrimpView($this->router->getRoutingElements());
     }
 
     /**
