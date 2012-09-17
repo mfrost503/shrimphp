@@ -2,8 +2,8 @@
 namespace ShrimPHP\Core;
 /*
  * Request
- * Description: A class that stores a request string
- * Author: Matt Frost
+ * @description: A class that stores a request string
+ * @author: Matt Frost
  */
 class Request {
     /**

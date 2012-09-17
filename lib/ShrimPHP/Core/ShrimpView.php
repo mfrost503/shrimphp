@@ -1,7 +1,7 @@
 <?php
 namespace ShrimPHP\Core;
 
-class ShrimpView implements View
+class ShrimpView extends View
 {
     /**
      * @var string

@@ -126,4 +126,6 @@ class ViewTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($templateVariables['{email}'],'test@test.com');
         $this->assertEquals($templateVariables['{phone}'],'123-123-1234');
     }
+
+
 }

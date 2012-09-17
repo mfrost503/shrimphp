@@ -2,6 +2,6 @@
 
 namespace ShrimPHP\Core;
 
-interface View {
-    public function render();
+abstract class  View {
+    abstract public function render();
 }

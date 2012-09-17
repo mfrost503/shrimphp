@@ -1,8 +1,11 @@
 <?php
 
-define('APPROOT',dirname(dirname(__FILE__)));
-define('LIBPATH',str_replace('//','/',APPROOT.'/lib/'));
-define('MODULEPATH',APPROOT.'/modules/');
+require_once dirname(dirname(__FILE__)) . '/config.php';
+
+define('APPROOT',$config['paths']['application']);
+define('LIBPATH',$config['paths']['lib']);
+define('MODULEPATH',$config['paths']['modules']);
+define('LAYOUTPATH', $config['paths']['layout']);
 
 function myLoader($class)
 {
@@ -18,5 +21,11 @@ function myLoader($class)
 
     require LIBPATH . $fileName;
 }
+function shrimpError()
+{
 
+}
+set_error_handler('shrimpError',E_ALL);
 spl_autoload_register('myLoader');
+
+

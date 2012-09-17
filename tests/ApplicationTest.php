@@ -129,4 +129,51 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $application = new ShrimPHP\Core\Application($router);
         $this->assertFalse($application->run());
     }
+
+    /**
+     * @test
+     * Given that we've provided a valid view
+     * the view property should be an instance of View
+     */
+
+    public function EnsureThatViewIsAnInstanceOfAViewInterface()
+    {
+        $request = new ShrimPHP\Core\Request('main/json/index');
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/json/index',array('controller'=>'json','action'=>'index','module'=>'main')));
+        $view = new ShrimPHP\Core\ShrimpView($router->getRoutingElements());
+        $application = new ShrimPHP\Core\Application($router,$view);
+        $applicationView = self::getProperty('view')->getValue($application);
+        $this->assertTrue($applicationView instanceof ShrimPHP\Core\View);
+    }
+
+    /**
+     * @test
+     * Given that we provide an invalid view to the application
+     * then we should receive an exception
+     * @expectedException ShrimPHP\Exceptions\ApplicationException
+     */
+    public function EnsureThatInvalidViewThrowsNewException()
+    {
+        $request = new ShrimPHP\Core\Request('main/json/index');
+        $router = new ShrimPHP\Core\Router($request);
+        $router->addRoute(new ShrimPHP\Core\Route('main/json/index',array('controller'=>'json','action'=>'index','module'=>'main')));
+        $application = new ShrimPHP\Core\Application($router,$request);
+        $application->run();
+    }
+
+    /**
+     * @test
+     * Given that we provide an invalid router to the application
+     * then an exception should be thrown
+     * @expectedException ShrimPHP\Exceptions\ApplicationException
+     */
+
+      public function EnsureInvalidRouterThrowsException()
+      {
+          $request = new ShrimPHP\Core\Request('main/json/index');
+          $router = "Router";
+          $application = new ShrimPHP\Core\Application($router,$request);
+          $application->run();
+      }
 }

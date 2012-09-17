@@ -1,10 +1,5 @@
 <?php
 
-define('APPROOT',dirname(__FILE__));
-define('LIBPATH',str_replace('//','/',APPROOT.'/lib/'));
-define('MODULEPATH',APPROOT.'/modules/');
-define('LAYOUTPATH', APPROOT.'/layouts/');
-
 function myLoader($class)
 {
     $class = ltrim($class,'\\');
@@ -21,6 +16,15 @@ function myLoader($class)
 }
 
 spl_autoload_register('myLoader');
+
+
+$config = new ShrimPHP\Core\Config('config.php');
+
+
+define('APPROOT',$config['paths']['application']);
+define('LIBPATH',$config['paths']['lib']);
+define('MODULEPATH',$config['paths']['modules']);
+define('LAYOUTPATH', $config['paths']['layout']);
 
 /**
  * Create the Request Variable
