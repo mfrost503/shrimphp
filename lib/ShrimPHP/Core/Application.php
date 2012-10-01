@@ -19,26 +19,6 @@ class Application {
     private $router = null;
 
     /**
-     * @var string
-     * The module's controller object
-     */
-
-    private $controller;
-
-    /**
-     * @var string
-     * The module's action method
-     */
-
-    private $action;
-
-    /**
-     * @var array
-     * Module, Controller, Action components set by the router
-     */
-
-    private $components = array();
-    /**
      * @param Router $router
      * @param View $view
      * @throws \ShrimPHP\Exceptions\ApplicationException
@@ -50,13 +30,13 @@ class Application {
         if($router instanceof Router){
             $this->router = $router;
             $this->router->getRoutingElements();
-            $this->components = $this->router->get('components');
+
         }else{
             throw new \ShrimPHP\Exceptions\ApplicationException("Invalid Router passed to application");
         }
 
         if($view === null){
-            $this->view = new ShrimpView($this->components);
+            $this->view = new ShrimpView($this->router->get('components'));
         }
 
         if($view instanceof View){
@@ -78,8 +58,6 @@ class Application {
         if(!isset($this->view)){
             throw new \ShrimPHP\Exceptions\ApplicationException("The view object provided is not a valid view");
         }
-        //$this->setController();
-        //$this->setAction();
 
         $file = MODULEPATH . $this->router->get('module') . '/controllers/'.$this->router->get('controller').'.php';
 

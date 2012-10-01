@@ -84,7 +84,8 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $router->addRoute(new ShrimPHP\Core\Route("main/index/show",array('controller'=>'index','action'=>'show','module'=>'main')));
         $application = new ShrimPHP\Core\Application($router);
         $routerProperty = self::getProperty('router')->getValue($application);
-        $componentsProperty = self::getProperty('components')->getValue($application);
+        $routerProperty->getRoutingElements();
+        $componentsProperty = $routerProperty->get('components');
         $this->assertTrue($routerProperty instanceof ShrimPHP\Core\Router);
         $this->assertTrue(is_array($componentsProperty));
         $this->assertTrue(count($componentsProperty)> 0);
