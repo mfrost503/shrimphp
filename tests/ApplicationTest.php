@@ -15,33 +15,6 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * Given the application has a router and the proper request injected
-     * it checks to ensure the files/methods exist so they can be included
-     * in this case everything will exist
-     */
-
-    public function ApplicationControllerExistsAndActionNameIsSet()
-    {
-
-        $request = new ShrimPHP\Core\Request($this->requestString);
-        $router = new ShrimPHP\Core\Router($request);
-        $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('controller'=>'index','module'=>'main')));
-        $application = new ShrimPHP\Core\Application($router);
-        $this->assertEquals($router->get('request')->getRequest(),$this->requestString);
-        $this->assertTrue(is_array($router->getRoutingElements()));
-        $setController = self::getMethod('setController');
-        $setController->invoke($application);
-        $controller = self::getProperty('controller');
-        $this->assertTrue($controller->getValue($application) instanceof IndexController);
-        $setAction = self::getMethod('setAction');
-        $setAction->invoke($application);
-        $action = self::getProperty('action');
-        $this->assertEquals($action->getValue($application),'showAction');
-        $this->assertTrue(method_exists($controller->getValue($application),$action->getValue($application)));
-    }
-
-    /**
-     * @test
      * Given that we have an instance of the application
      * and we have a valid router instance
      * the view path should be initially set using router components
@@ -51,15 +24,16 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
     {
         $request = new ShrimPHP\Core\Request($this->requestString);
         $router = new ShrimPHP\Core\Router($request);
+        $router->getRoutingElements();
+        $view = new ShrimPHP\Core\ShrimpView($router->get('components'));
         $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('controller'=>'index','module'=>'main')));
-        $application = new ShrimPHP\Core\Application($router);
+        $application = new ShrimPHP\Core\Application($router,$view);
         ob_start();
         $application->run();
         $output = ob_get_contents();
         ob_clean();
         $view = self::getProperty('view')->getValue($application);
         $this->assertTrue($view instanceof ShrimPHP\Core\View);
-        $this->assertFalse(empty($output));
     }
 
     protected static function getMethod($method)
@@ -90,6 +64,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $request = new ShrimPHP\Core\Request($this->requestString);
         $router = new ShrimPHP\Core\Router($request);
         $router->addRoute(new ShrimPHP\Core\Route('main/index/show',array('module'=>'main','controller'=>'index','action'=>'show')));
+        $router->getRoutingElements();
         $application = new ShrimPHP\Core\Application($router);
         ob_start();
         $this->assertTrue($application->run());

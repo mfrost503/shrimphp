@@ -44,10 +44,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new ShrimPHP\Core\Route('main/index/show',array('controller'=>'index','action'=>'show','module'=>'main')));
-        $this->assertTrue(is_array($components = $router->getRoutingElements()));
-        $this->assertEquals($components['controller'],'index');
-        $this->assertEquals($components['action'],'show');
-        $this->assertEquals($components['module'],'main');
+        $router->getRoutingElements();
+        $this->assertEquals($router->get('controller'),'IndexController');
+        $this->assertEquals($router->get('action'),'showAction');
+        $this->assertEquals($router->get('module'),'main');
     }
 
    /**
@@ -68,10 +68,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new ShrimPHP\Core\Route('main/index/:action',array('module'=>'main','controller'=>'index')));
-        $this->assertTrue(is_array($components = $router->getRoutingElements()));
-        $this->assertEquals($components['action'],'show');
-        $this->assertEquals($components['controller'],'index');
-        $this->assertEquals($components['module'],'main');
+        $router->getRoutingElements();
+        $this->assertEquals($router->get('action'),'showAction');
+        $this->assertEquals($router->get('controller'),'IndexController');
+        $this->assertEquals($router->get('module'),'main');
     }
 
     /**
@@ -92,10 +92,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new ShrimPHP\Core\Route('main/:controller/show',array('module'=>'main','action'=>'show')));
-        $this->assertTrue(is_array($components=$router->getRoutingElements()));
-        $this->assertEquals($components['controller'],'index');
-        $this->assertEquals($components['action'],'show');
-        $this->assertEquals($components['module'],'main');
+        $router->getRoutingElements();
+        $this->assertEquals($router->get('controller'),'IndexController');
+        $this->assertEquals($router->get('action'),'showAction');
+        $this->assertEquals($router->get('module'),'main');
     }
 
     /**
@@ -116,10 +116,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($router->get('request') instanceof ShrimPHP\Core\Request);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $router->addRoute(new ShrimPHP\Core\Route(':module/index/show',array('controller'=>'index','action'=>'show')));
-        $this->assertTrue(is_array($components = $router->getRoutingElements()));
-        $this->assertEquals($components['module'],'main');
-        $this->assertEquals($components['controller'],'index');
-        $this->assertEquals($components['action'],'show');
+        $router->getRoutingElements();
+        $this->assertEquals($router->get('module'),'main');
+        $this->assertEquals($router->get('controller'),'IndexController');
+        $this->assertEquals($router->get('action'),'showAction');
     }
 
     /**
@@ -182,7 +182,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $router->addRoute(new ShrimPHP\Core\Route('main/index/index',array('module'=>'main','controller'=>'index','action'=>'index')));
         $router->addRoute(new ShrimPHP\Core\Route('main/index/hide',array('module'=>'main','controller'=>'index','action'=>'hide')));
         $router->addRoute(new ShrimPHP\Core\Route('main/index/404',array('module'=>'main','controller'=>'index','action'=>'404')));
-        $components = $router->getRoutingElements();
+        $router->getRoutingElements();
+        $components = $router->get('components');
         $this->assertEquals($components,$expectedReturnArray);
     }
 

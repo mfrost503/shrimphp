@@ -1,6 +1,6 @@
 <?php
-
 namespace ShrimPHP\Core;
+use ShrimPHP\Exceptions;
 
 class Config
 {
@@ -9,11 +9,16 @@ class Config
     public function __construct($file)
     {
         $config = "";
-        if(is_file($file) && is_readable($file)){
+        try{
+            if(!is_file($file) && is_readable($file)){
+                throw new \ShrimPHP\Exceptions\ConfigException('Invalid configuration file provided');
+            }
             include $file;
             $this->config = $config;
+            return $this->config;
+        }catch(\ShrimPHP\Exceptions\ConfigException $e){
+            print $e->getMessage();
         }
-        return $this->config;
     }
 
     /**

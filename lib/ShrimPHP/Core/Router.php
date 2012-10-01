@@ -5,6 +5,9 @@ class Router
 {
     private $request;
     private $routes = array();
+    private $controller = 'IndexController';
+    private $action = 'indexAction';
+    private $module = 'main';
     private $components = array('controller'=>'index','action'=>'show','module'=>'main');
 
     public function __construct(Request $request)
@@ -33,7 +36,7 @@ class Router
     }
 
     /**
-     * @return array
+     * @return void
      * @description returns an array containing the controller name,module name, action name
      * base on a route or variable names - matchRoutes will set the components if they match
      * otherwise the default will be returned
@@ -42,8 +45,9 @@ class Router
     public function getRoutingElements()
     {
         $this->matchRoutes();
-
-        return $this->components;
+        $this->controller = ucfirst($this->components['controller']).'Controller';
+        $this->action = $this->components['action'] . 'Action';
+        $this->module = $this->components['module'];
     }
 
     /**

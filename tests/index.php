@@ -1,11 +1,12 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . '/config.php';
+require_once dirname(__FILE__) . '/config.php';
 
 define('APPROOT',$config['paths']['application']);
 define('LIBPATH',$config['paths']['lib']);
 define('MODULEPATH',$config['paths']['modules']);
 define('LAYOUTPATH', $config['paths']['layout']);
+
 
 function myLoader($class)
 {
@@ -19,7 +20,11 @@ function myLoader($class)
     }
     $fileName .= str_replace('\\',DIRECTORY_SEPARATOR,$class) . '.php';
 
-    require LIBPATH . $fileName;
+    if(preg_match('/[A-Za-z]+Controller/',$fileName)){
+        return;
+    }else{
+        require LIBPATH . $fileName;
+    }
 }
 function shrimpError()
 {

@@ -1,6 +1,6 @@
 <?php
 
-class DBTest extends PHPUnit_Extensions_SeleniumTestCase
+class DBTest extends PHPUnit_Extensions_Selenium2TestCase
 {
     public function setUp(){
         $this->setBrowser('googlechrome');

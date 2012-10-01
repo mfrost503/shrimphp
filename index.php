@@ -1,5 +1,13 @@
 <?php
 
+//$configuration = new ShrimPHP\Core\Config('config.php');
+//$config = $configuration->get();
+include_once 'config.php';
+define('APPROOT',$config['paths']['application']);
+define('LIBPATH',$config['paths']['lib']);
+define('MODULEPATH',$config['paths']['modules']);
+define('LAYOUTPATH', $config['paths']['layout']);
+
 function myLoader($class)
 {
     $class = ltrim($class,'\\');
@@ -11,20 +19,14 @@ function myLoader($class)
         $fileName = str_replace('\\',DIRECTORY_SEPARATOR,$namespace) . DIRECTORY_SEPARATOR;
     }
     $fileName .= str_replace('\\',DIRECTORY_SEPARATOR,$class) . '.php';
-
-    require LIBPATH . $fileName;
+    if(preg_match('/[A-Za-z]+Controller/',$fileName)){
+        return;
+    }else{
+        require LIBPATH . $fileName;
+    }
 }
 
 spl_autoload_register('myLoader');
-
-
-$config = new ShrimPHP\Core\Config('config.php');
-
-
-define('APPROOT',$config['paths']['application']);
-define('LIBPATH',$config['paths']['lib']);
-define('MODULEPATH',$config['paths']['modules']);
-define('LAYOUTPATH', $config['paths']['layout']);
 
 /**
  * Create the Request Variable
@@ -47,8 +49,8 @@ $router->addRoute($home);
  * Instantiate a view that can be passed to the Application
  * this allows a 3rd party templating system like Smarty or Twig
  */
-
-$view = new ShrimPHP\Core\ShrimpView($router->getRoutingElements());
+$router->getRoutingElements();
+$view = new ShrimPHP\Core\ShrimpView($router->get('components'));
 
 /**
  * Run it!

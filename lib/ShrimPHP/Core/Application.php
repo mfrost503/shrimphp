@@ -10,7 +10,6 @@ class Application {
 
     private $view = null;
 
-
     /**
      * @var Router
      * Instance of Router that sets the controller,module, and action
@@ -50,7 +49,8 @@ class Application {
     {
         if($router instanceof Router){
             $this->router = $router;
-            $this->components = $this->router->getRoutingElements();
+            $this->router->getRoutingElements();
+            $this->components = $this->router->get('components');
         }else{
             throw new \ShrimPHP\Exceptions\ApplicationException("Invalid Router passed to application");
         }
@@ -66,34 +66,6 @@ class Application {
     }
 
     /**
-     * @return string
-     * @description interprets the values in the array and ensures the file exists
-     * before returning the appropriate controller
-     **/
-
-    private function setController()
-    {
-        $file = MODULEPATH . $this->components['module'].'/controllers/'.$this->components['controller'] .'.php';
-        if(is_file($file)){
-            include_once $file;
-            $class = ucwords($this->components['controller']) . "Controller";
-            $this->controller = new $class($this->view);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return string
-     * Indiscriminately returning action with the Action suffix attached, no validation at this point
-     */
-
-    private function setAction()
-    {
-        $this->action = $this->components['action'].'Action';
-    }
-
-    /**
      * @description - we take the controller we've set and the action we've set
      * and we call them, if they don't exist we look for an 404 page...otherwise
      * we throw an ugly error onto the screen.
@@ -106,12 +78,20 @@ class Application {
         if(!isset($this->view)){
             throw new \ShrimPHP\Exceptions\ApplicationException("The view object provided is not a valid view");
         }
-        $this->setController();
-        $this->setAction();
-        if((method_exists($this->controller,$this->action))){
-            call_user_func(array($this->controller,$this->action));
+        //$this->setController();
+        //$this->setAction();
+
+        $file = MODULEPATH . $this->router->get('module') . '/controllers/'.$this->router->get('controller').'.php';
+
+        if(is_file($file)){
+            include_once $file;
+            $controller = $this->router->get('controller');
+            $action = $this->router->get('action');
+            $ctrl = new $controller($this->view);
+            $ctrl->$action();
             return true;
         }
+
         return false;
     }
 
