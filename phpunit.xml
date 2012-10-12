@@ -1,0 +1,10 @@
+<phpunit bootstrap="tests/index.php">
+    <testsuite name="appAndConfig">
+        <file>./tests/ApplicationTest.php</file>
+        <file>./tests/ConfigTest.php</file>
+    </testsuite>
+    <testsuite name="SomeOthers">
+        <file>./tests/RouteTest.php</file>
+        <file>./tests/RouterTest.php</file>
+    </testsuite>
+</phpunit>
