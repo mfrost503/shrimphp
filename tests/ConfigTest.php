@@ -1,5 +1,5 @@
 <?php
-
+use ShrimPHP\Core\Config;
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -15,7 +15,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function EnsureConfigFileCanBeLoaded()
     {
-        $config = new ShrimPHP\Core\Config(APPROOT.'/config.php');
+        $config = new Config(APPROOT.'/config.php');
         $items = $config->get();
         $this->assertTrue(is_array($items));
         $this->assertTrue(count($items) > 0);
@@ -28,7 +28,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
      */
     public function EnsureValuesCanBeExtractedByKey()
     {
-        $config = new ShrimPHP\Core\Config(APPROOT.'/config.php');
+        $config = new Config(APPROOT.'/config.php');
         $db = $config->get('db');
         $this->assertTrue(is_array($db));
         $this->assertTrue(count($db) > 0);
@@ -42,7 +42,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function EnsureValuesCanBeExtractedWithoutKey()
     {
-        $config = new ShrimPHP\Core\Config(APPROOT . '/config.php');
+        $config = new Config(APPROOT . '/config.php');
         $values = $config->get();
         $this->assertTrue(is_array($values));
         $this->assertTrue(count($values) > 0);

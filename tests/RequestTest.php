@@ -1,5 +1,5 @@
 <?php
-
+use ShrimPHP\Core\Request;
 class RequestTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -20,7 +20,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
      */
     public function testRequestIsSetAndRetrievedProperly()
     {
-        $request = new ShrimPHP\Core\Request();
+        $request = new Request();
         $request->setRequest($this->requestUri);
         $this->assertEquals($request->getRequest(),$this->requestUri);
         $this->assertFalse(empty($this->requestUri));

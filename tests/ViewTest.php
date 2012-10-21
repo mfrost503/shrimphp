@@ -1,4 +1,5 @@
 <?php
+use ShrimPHP\Core\ShrimpView;
 
 class ViewTest extends PHPUnit_Framework_TestCase {
 
@@ -20,7 +21,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function RetrieveViewTemplateEnsureContentIsReturned()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $view->set('view','show.tpl');
         $output = $view->render();
         $this->assertTrue(!empty($output));
@@ -37,7 +38,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function EnsureViewTemplateIsReturnedWithDefaultSetup()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $this->assertEquals('show.tpl',$view->get('view'));
         $this->assertTrue(is_dir($view->get('path')));
         $this->assertTrue(is_file($view->get('path').$view->get('view')));
@@ -54,7 +55,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function VerifyThatNoLayoutIsReturnedIfFileDoesNotExist()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $view->set('layout','newLayout.tpl');
         ob_start();
         include $view->get('path').$view->get('view');
@@ -71,7 +72,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function EnsureDefaultLayoutIsSetOnView()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $layout =  $view->get('layout');
         $this->assertEquals($layout,'layout.tpl');
         $this->assertTrue(is_file(APPROOT.'/layouts/'.$layout));
@@ -85,7 +86,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function EnsureLayoutIsReturnedWithNoValidView()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $view->set('view','');
         ob_start();
         include APPROOT .'/layouts/' . $view->get('layout');
@@ -102,7 +103,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
      */
     public function EnsureErrorMessageIsReturnedWithNoViewOrLayout()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $view->set('layout','');
         $view->set('view','');
         $expected = 'No View or Layout set for this action';
@@ -117,7 +118,7 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 
     public function EnsureTemplateVariableKeysAreSetCorrectly()
     {
-        $view = new ShrimPHP\Core\ShrimpView($this->components);
+        $view = new ShrimpView($this->components);
         $view->assign('user','Matt');
         $view->assign('email','test@test.com');
         $view->assign('phone','123-123-1234');

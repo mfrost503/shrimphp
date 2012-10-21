@@ -1,6 +1,6 @@
 <?php
-
-class RouteTest extends PHPUnit_Framework_TestCase
+use ShrimPHP\Core\Route;
+class RouteTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -17,7 +17,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function CreateRouteAndEnsureValuesAreSetAndRetrieved()
     {
-        $route = new ShrimPHP\Core\Route('show',array('controller'=>'index','action'=>'show','module'=>'main'));
+        $route = new Route('show',array('controller'=>'index','action'=>'show','module'=>'main'));
         $this->assertEquals('show',$route->getPath());
         $this->assertTrue(is_array($components = $route->getComponents()));
         $this->assertEquals($components['controller'],'index');
@@ -31,7 +31,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function CreateRouteWithPlaceHolderAndValidateRegex()
     {
-        $route = new ShrimPHP\Core\Route('index/main/:action',array('controller'=>'index','module'=>'main'));
+        $route = new Route('index/main/:action',array('controller'=>'index','module'=>'main'));
         $this->assertTrue(strpos($route->getRegexPath(),'\w+') > -1);
     }
     /**
@@ -42,7 +42,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     public function CreateRouteWithControllerPlaceHolderAndValidateRegex()
     {
-        $route = new ShrimPHP\Core\Route('index/:controller/show',array('action'=>'show','module'=>'main'));
+        $route = new Route('index/:controller/show',array('action'=>'show','module'=>'main'));
         $this->assertTrue(strpos($route->getRegexPath(),'\w+') > -1);
     }
 }

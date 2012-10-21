@@ -10,8 +10,8 @@ class Config
     {
         $config = "";
         try{
-            if(!is_file($file) && is_readable($file)){
-                throw new \ShrimPHP\Exceptions\ConfigException('Invalid configuration file provided');
+            if(!is_file($file) || !is_readable($file)){
+                throw new \ShrimPHP\Exceptions\ConfigException('The configuration file you have provided is not readable');
             }
             include $file;
             $this->config = $config;
