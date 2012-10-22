@@ -1,6 +1,8 @@
 <?php
+namespace ShrimPHP;
+use ShrimPHP\Core as Core;
 
-//$configuration = new ShrimPHP\Core\Config('config.php');
+//$configuration = new Core\Config('config.php');
 //$config = $configuration->get();
 include_once 'config.php';
 define('APPROOT',$config['paths']['application']);
@@ -26,7 +28,7 @@ function myLoader($class)
     }
 }
 
-spl_autoload_register('myLoader');
+spl_autoload_register('ShrimPHP\myLoader');
 
 /**
  * Create the Request Variable
@@ -35,14 +37,14 @@ spl_autoload_register('myLoader');
  * Defaults to REQUEST_URI
  */
 
-$request = new ShrimPHP\Core\Request($_SERVER['REQUEST_URI']);
+$request = new Core\Request($_SERVER['REQUEST_URI']);
 
 /**
  * Set the router and add the routes
  */
 
-$router = new ShrimPHP\Core\Router($request);
-$home = new ShrimPHP\Core\Route('index/:action',array('controller'=>'index','module'=>'main'));
+$router = new Core\Router($request);
+$home = new Core\Route('index/:action',array('controller'=>'index','module'=>'main'));
 $router->addRoute($home);
 
 /**
@@ -50,12 +52,12 @@ $router->addRoute($home);
  * this allows a 3rd party templating system like Smarty or Twig
  */
 $router->getRoutingElements();
-$view = new ShrimPHP\Core\ShrimpView($router->get('components'));
+$view = new Core\ShrimpView($router->get('components'));
 
 /**
  * Run it!
  */
 
-$application = new ShrimPHP\Core\Application($router,$view);
+$application = new Core\Application($router,$view);
 $application->run();
 
