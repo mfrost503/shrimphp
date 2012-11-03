@@ -1,0 +1,16 @@
+{
+    "name": "shrimphp",
+    "type":"framework",
+    "description": "A microframework built on TDD Principles",
+    "keywords":["framework","micro"],
+    "homepage":"http://github.com/mfrost503/shrimphp",
+    "authors" :[{
+        "name":"Matt Frost",
+        "email":"mfrost.design@gmail.com",
+        "homepage":"http://shortwhitebaldguy.com",
+        "role":"Developer"
+    }],
+    "require":{
+        "php":">=5.3.0"
+    }
+}
