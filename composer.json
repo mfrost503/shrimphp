@@ -1,5 +1,5 @@
 {
-    "name": "shrimphp",
+    "name": "ShrimPHP/Core",
     "type":"framework",
     "description": "A microframework built on TDD Principles",
     "keywords":["framework","micro"],
