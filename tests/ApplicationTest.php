@@ -105,7 +105,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
 
     public function EnsureThatRunReturnsFalseWhenInvalidControllerActionIsProvided()
     {
-        $request = new Request('main/json/index');
+        $request = $this->getMock('ShrimPHP\core\Request',array('__construct'),array('main/json/index'));
         $router = new Router($request);
         $router->addRoute(new Route('main/json/index',array('controller'=>'json','action'=>'index','module'=>'main')));
         $application = new Application($router);
