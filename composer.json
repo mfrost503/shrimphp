@@ -1,6 +1,6 @@
 {
     "name": "shrimphp",
-    "type":"framework",
+    "type":"library",
     "description": "A microframework built on TDD Principles",
     "keywords":["framework","micro"],
     "homepage":"http://github.com/mfrost503/shrimphp",

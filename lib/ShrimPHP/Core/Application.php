@@ -73,5 +73,10 @@ class Application {
         return false;
     }
 
+    public function __call($method,$args)
+    {
+        throw new \ShrimPHP\Exceptions\ApplicationException("The action you've attempted to call does not exist");
+    }
+
 
 }

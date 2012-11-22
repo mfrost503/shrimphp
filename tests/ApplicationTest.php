@@ -81,13 +81,20 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
      * @test
      * Given that we have injected a valid Router in the constructor
      * we should see the Router has been initialize and the components exist
+     *
+     * @todo analyze this test, seems like this is testing the functionality of the router
+     * and has little to do with application...MF 11.21.12
      */
 
     public function VerifyThatAValidRouterSetsTheRouterAndComponents()
     {
-        $request = new Request($this->requestString);
-        $router = new Router($request);
-        $router->addRoute(new Route("main/index/show",array('controller'=>'index','action'=>'show','module'=>'main')));
+
+        $request = $this->getMock('ShrimPHP\core\Request',array('__construct'),array($this->requestString));
+        $router = $this->getMock('ShrimPHP\core\Router',array('__construct'),array($request));
+        $route = $this->getMock('ShrimPHP\core\Route',array('__construct'),
+            array("main/index/show",array('controller'=>'index','action'=>'show','module'=>'main'))
+        );
+        $router->addRoute($route);
         $application = new Application($router);
         $routerProperty = self::getProperty('router')->getValue($application);
         $routerProperty->getRoutingElements();
@@ -158,4 +165,21 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
           $application = new Application($router,$request);
           $application->run();
       }
+
+      /**
+       * @test
+       * Given that a route is provided where the file exists but the action doesn't
+       * when the application is run
+       * then we should expect to have an exception thrown
+       * @expectedException ShrimPHP\Exceptions\ApplicationException
+       */
+    public function InvalidActionThrowsException()
+    {
+        $request = $this->getMock('ShrimPHP\core\Request',array('__construct'),array('main/index/json'));
+        $router = $this->getMock('ShrimPHP\core\Router',array('__construct'),array($request));
+        $route = $this->getMock('ShrimPHP\core\Route',array('__construct'),array('main/index/json',array('controller'=>'index','action'=>'json','module'=>'main')));
+        $router->addRoute($route);
+        $application = new Application($router,$request);
+        $application->run();
+    }
 }
