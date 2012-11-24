@@ -1,8 +1,7 @@
 #ShrimPHP#
 <a href="https://github.com/mfrost503/shrimphp"><img src="https://secure.travis-ci.org/mfrost503/shrimphp.png?branch=master"></a>
 
-ShrimPHP is a PHP Micro-Framework built on the idea of providing a quick 
-light-weight way of getting your applications live.  ShrimPHP provides basic
+ShrimPHP is a PHP Micro-Framework built to help you get things going quickly.  ShrimPHP provides basic
 routing, views, controllers, and models to give you the flexibility you need.
 
 ShrimPHP is going to be developed using very aggressive test-driven development
